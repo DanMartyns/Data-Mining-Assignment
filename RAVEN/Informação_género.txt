@@ -1,0 +1,47 @@
+DEI_1 - Masculino - TREINO: 11 Corretas / 1 Incorreta || Teste: 24 Corretas / 8 Incorretas
+DEI_2 - Feminino - TREINO: 11 Corretas  / 1 Incorreta || Teste: 27 Corretas / 9 Incorretas
+DEI_3 - Feminino - TREINO:  12 Corretas / 0 Incorreta || Teste: 32 Corretas / 4 Incorretas
+DEI_4 - Masculino - TREINO: 12 Corretas  / 0 Incorreta || Teste: 25 Corretas / 7 Incorretas
+DEI_5 - Masculino - TREINO: 11 Corretas  / 1 Incorreta || Teste: 26 Corretas / 10 Incorretas
+DEI_6 - Masculino - TREINO:  10 Corretas / 2 Incorreta || Teste: 21 Corretas / 15 Incorretas
+DEI_7 - Masculino - TREINO: 10 Corretas  / 2 Incorreta || Teste: 26 Corretas / 10 Incorretas
+DEI_8 - Feminino - TREINO: 12 Corretas  / 0 Incorreta || Teste: 31 Corretas / 5 Incorretas
+DEI_9 - Feminino - TREINO: 9 Corretas  / 3 Incorreta || Teste: 17 Corretas / 19 Incorretas
+DEI_10 - Masculino - TREINO: 9 Corretas  / 3 Incorreta || Teste: 6 Corretas / 1 Incorretas
+DEI_11 - Masculino - TREINO: 11 Corretas  / 1 Incorreta || Teste: 25 Corretas / 11 Incorretas
+DEI_12 - Masculino - TREINO: 10 Corretas  / 2 Incorreta || Teste: 22 Corretas / 14 Incorretas
+DEI_13 - Masculino - TREINO: 12 Corretas  / 0 Incorreta || Teste: 29 Corretas / 7 Incorretas
+DEI_14 - Masculino - TREINO: 12 Corretas  / 0 Incorreta || Teste: 25 Corretas / 11 Incorretas
+DEI_15 - Masculino - TREINO:  10 Corretas / 2 Incorreta || Teste: 18 Corretas / 18 Incorretas
+DEI_16 - Masculino - TREINO: 8 Corretas / 4 Incorreta || Teste: 17 Corretas / 19 Incorretas
+DEI_17 - Masculino - TREINO: 12  Corretas / 0 Incorreta || Teste: 27 Corretas / 9 Incorretas
+DEI_18 - Masculino - TREINO: 11 Corretas  / 1 Incorreta || Teste: 28 Corretas / 8 Incorretas
+DEI_19 - Masculino - TREINO: 10 Corretas  / 2 Incorreta || Teste: 27 Corretas / 9 Incorretas
+DEI_20 - Feminino - TREINO: 9 Corretas  / 3 Incorreta || Teste: 16 Corretas / 15 Incorretas
+DEI_21 - Feminino - TREINO: 10 Corretas  / 2 Incorreta || Teste: 20 Corretas / 16 Incorretas
+DEI_22 - Feminino - TREINO: 8 Corretas  / 4 Incorreta || Teste: 16 Corretas / 20 Incorretas
+DEI_23 - Masculino - TREINO:  11 Corretas / 1 Incorreta || Teste: 16 Corretas / 20 Incorretas
+DEI_24 - Masculino - TREINO: 9 Corretas  / 3 Incorretas || Teste: 18 Corretas / 18 Incorretas
+
+----------
+
+ESEC_1 - Masculino - TREINO: 11 Corretas / 1 Incorreta || Teste: 24 Corretas / 12 Incorretas
+ESEC_2 - Feminino - TREINO: 11 Corretas / 1 Incorreta || Teste: 23 Corretas / 13 Incorretas
+ESEC_3 - Feminino - TREINO: 5 Corretas / 7 Incorreta || Teste: 18 Corretas / 18 Incorretas
+ESEC_4 - Masculino - TREINO: 10 Corretas / 2 Incorreta || Teste: 20 Corretas / 16 Incorretas
+ESEC_5 - Feminino - TREINO:  8 Corretas / 4 Incorreta || Teste: 24 Corretas / 12 Incorretas
+ESEC_7 - Masculino - TREINO: 12  Corretas / 0  Incorreta || Teste: 28 Corretas / 8 Incorretas
+ESEC_8 - Masculino - TREINO: 9 Corretas / 3 Incorreta || Teste: 15 Corretas / 21 Incorretas
+ESEC_9 - Masculino - TREINO: 11 Corretas / 1 Incorreta || Teste: 22 Corretas / 14 Incorretas
+ESEC_10 - Feminino - TREINO:  8 Corretas / 4 Incorreta || Teste: 19 Corretas / 17 Incorretas
+ESEC_11 - Feminino - TREINO: 8 Corretas / 4 Incorreta || Teste: 9 Corretas / 27 Incorretas
+ESEC_12 - Masculino - TREINO: 10 Corretas / 2 Incorreta || Teste: 21 Corretas / 15 Incorretas
+ESEC_13 - Masculino - TREINO: 10 Corretas / 2 Incorreta || Teste: 18 Corretas / 18 Incorretas
+ESEC_14 - Masculino - TREINO: 8 Corretas / 4 Incorreta || Teste: 13 Corretas / 23 Incorretas
+ESEC_15 - Feminino - TREINO: 10 Corretas / 2 Incorreta || Teste: 22 Corretas / 14 Incorretas
+ESEC_16 - Masculino - TREINO: 11 Corretas / 1 Incorreta || Teste: 22 Corretas / 14 Incorretas
+ESEC_17 - Masculino - TREINO: 10 Corretas / 2 Incorreta || Teste: 22 Corretas / 14 Incorretas
+ESEC_18 - Feminino - TREINO: 9 Corretas / 3 Incorreta || Teste: 14 Corretas / 22 Incorretas
+ESEC_19 - Feminino - TREINO: 8 Corretas / 4 Incorreta || Teste: 18 Corretas / 18 Incorretas
+ESEC_20 - Feminino - TREINO: 12 Corretas / 0 Incorreta || Teste: 25 Corretas / 11 Incorretas
+ESEC_21 - Masculino - TREINO: 11 Corretas / 1 Incorreta || Teste: 30 Corretas / 6 Incorretas
