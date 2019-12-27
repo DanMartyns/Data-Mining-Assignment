@@ -67,7 +67,7 @@ with open(genreFile, "r") as f:
         if id[-2] == '_': id = id[:-1] + '0' + id[-1]
         for dataDict in [values['TRAINING'], values['TESTING']]: #get dicts train and test
             for i in range(len(dataDict[id])):
-                dataDict[id][i][:0] = [int(genre=='Masculino')]  
+                dataDict[id][i][0:0] = [int(genre=='Masculino')]  
                 dataDict[id][i][-1:-1] = [correct]
 
 
@@ -85,26 +85,26 @@ inds = np.where(np.isnan(Itrain))
 Itrain[inds] = np.take(col_mean, inds[1])
 
 scaler = MinMaxScaler()
-scaler.fit(Itrain[:,:-1])
+scaler.fit(Itrain[:,2:-1])
 
 Itest = items['TESTING']   #fixing missing values by the average
 col_mean = np.nanmean(Itest, axis=0)
 inds = np.where(np.isnan(Itest))
 Itest[inds] = np.take(col_mean, inds[1])
 
-data_trainX = scaler.transform(Itrain[:,:-1])
-data_trainY = Itrain[:,-1]
+data_trainX = scaler.transform(Itrain[:,2:-1])
+data_trainY = Itrain[:,:2]
 
-data_testX = scaler.transform(Itest[:,:-1])
-data_testY = Itest[:,-1] 
+data_testX = scaler.transform(Itest[:,2:-1])
+data_testY = Itest[:,:2] 
 
 
-pca = PCA(n_components=2)
-pcaData = pca.fit_transform(data_trainX[:,2:-1])
+#pca = PCA(n_components=2)
+#pcaData = pca.fit_transform(data_trainX[:,2:-1])
 
-plt.scatter(pcaData[:,0], pcaData[:,1])
+#plt.scatter(pcaData[:,0], pcaData[:,1])
 
-plt.show()
+#plt.show()
 
 
 
@@ -112,12 +112,36 @@ inputs = Input(shape=(data_trainX.shape[1],))
 x = Dense(32, activation='relu')(inputs)
 x = Dense(8, activation='relu')(x)
 x = Dense(8, activation='relu')(x)
-outputs = Dense(1, activation='sigmoid')(x)
+outputs = Dense(data_trainY.shape[1], activation='sigmoid')(x)
 model = Model(inputs=inputs, outputs=outputs)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 
-model.fit(data_trainX, data_trainY, epochs=16, batch_size=4)
-predicts = model.predict(data_testX)>0.5
-print('accuracy:',(predicts==data_testY).sum()/predicts.shape[0])
+model.fit(data_trainX, data_trainY, epochs=30, batch_size=8)
+predicts = (model.predict(data_testX)>0.5)
+
+genrePredicts = predicts[:,0:1]
+genreTest = data_testY[:,0:1]
+
+print('genre accuracy;', (genrePredicts==genreTest).sum()/genrePredicts.shape[0])
+
+coursePredicts = predicts[:,1:2]
+courseTest = data_testY[:,1:2]
+
+print('course accuracy;', (coursePredicts==courseTest).sum()/coursePredicts.shape[0])
+
+groupPredicts = predicts[:,0:1]+predicts[:,1:2]*2
+groupTest = data_testY[:,0:1]+data_testY[:,1:2]*2
+print('group accuracy:',(groupPredicts==groupTest).sum()/groupPredicts.shape[0])
 
 
+for i in range(4):
+    precision = np.multiply(groupPredicts==i,groupTest==i).sum()/((groupPredicts==i).sum())
+    recall = np.multiply(groupPredicts==i,groupTest==i).sum()/((groupTest==i).sum())
+    f1scor = 2*precision*recall/(precision+recall)
+    print('---')
+    print(f"precision group {i}: {precision}")    
+    print(f"reccal group {i}: {recall}")
+    print(f"f1-scor group {i}: {f1scor}")
+    
+#print('precision:', np.multiply(predicts,data_testY[:,:1]).sum()/predicts.sum())
+#print('reccal:', np.multiply(predicts,data_testY[:,:1]).sum()/data_testY[:,:1].sum())
