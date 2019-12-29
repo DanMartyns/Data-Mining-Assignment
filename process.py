@@ -114,41 +114,42 @@ model = Model(inputs=inputs, outputs=outputs)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 
 plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=False)
-model.fit(data_trainX, data_trainY, epochs=40, batch_size=8)
+model.fit(data_trainX, data_trainY, epochs=20, batch_size=8, verbose=0)
 predicts = (model.predict(data_testX)>0.5)
 print('-----')
 genrePredicts = predicts[:,-1:]
 genreTest = data_testY[:,-1:]
 indnames = ['FEMALE','MALE']
-print('genre accuracy:', (genrePredicts==genreTest).sum()/genrePredicts.shape[0])
+print(f"genre accuracy: {(genrePredicts==genreTest).sum()/genrePredicts.shape[0]:.3f}")
 for i in range(2):
-    precision = np.multiply(genrePredicts==i,genreTest==i).sum()/((genrePredicts==i).sum())
-    recall = np.multiply(genrePredicts==i,genreTest==i).sum()/((genreTest==i).sum())
+    divisor = (genrePredicts==i).sum()
+    precision = np.multiply(genrePredicts==i,genreTest==i).sum()/divisor if divisor else 0
+    recall = np.multiply(genrePredicts==i,genreTest==i).sum()/divisor if divisor else 0
     f1scor = 2*precision*recall/(precision+recall) if precision+recall else 0.0
     print('---')
-    print(f"precision genre {indnames[i]}: {precision}")    
-    print(f"reccal genre {indnames[i]}: {recall}")
-    print(f"f1-scor genre {indnames[i]}: {f1scor}")
+    print(f"precision genre {indnames[i]}: {precision:.3f}")    
+    print(f"reccal genre {indnames[i]}: {recall:.3f}")
+    print(f"f1-scor genre {indnames[i]}: {f1scor:.3f}")
 
 print('-----')
 coursePredicts = predicts[:,-2:-1] #same as [:,-2] but in matrix form
 courseTest = data_testY[:,-2:-1] #same as [:,-2] but in matrix form
 indnames = ['ESEC','DEI']
-print('course accuracy:', (coursePredicts==courseTest).sum()/coursePredicts.shape[0])
+print(f"course accuracy: {(coursePredicts==courseTest).sum()/coursePredicts.shape[0]:.3f}")
 for i in range(2):
     divisor = (coursePredicts==i).sum()
     precision = np.multiply(coursePredicts==i,courseTest==i).sum()/divisor if divisor else 0
     recall = np.multiply(coursePredicts==i,courseTest==i).sum()/divisor if divisor else 0
     f1scor = 2*precision*recall/(precision+recall) if precision+recall else 0.0
     print('---')
-    print(f"precision genre {indnames[i]}: {precision}")    
-    print(f"reccal genre {indnames[i]}: {recall}")
-    print(f"f1-scor genre {indnames[i]}: {f1scor}")
+    print(f"precision genre {indnames[i]}: {precision:.3f}")    
+    print(f"reccal genre {indnames[i]}: {recall:.3f}")
+    print(f"f1-scor genre {indnames[i]}: {f1scor:.3f}")
 print('-----')
 
 groupPredicts = predicts[:,-1:]+predicts[:,-2:-1]*2 #0,1,2,3
 groupTest = data_testY[:,-1:]+data_testY[:,-2:-1]*2 #0,1,2,3
-print('group accuracy:',(groupPredicts==groupTest).sum()/groupPredicts.shape[0])
+print(f"group accuracy: {(groupPredicts==groupTest).sum()/groupPredicts.shape[0]:.3f}")
 
 indnames = ['ESEC AND FEMALE','ESEC AND MALE', 'DEI AND FEMALE', 'DEI AND MALE']
 for i in range(4):
@@ -157,7 +158,7 @@ for i in range(4):
     recall = np.multiply(groupPredicts==i,groupTest==i).sum()/divisor if divisor else 0
     f1scor = 2*precision*recall/(precision+recall) if precision+recall else 0.0
     print('---')
-    print(f"precision group {indnames[i]}: {precision}")    
-    print(f"reccal group {indnames[i]}: {recall}")
-    print(f"f1-scor group {indnames[i]}: {f1scor}")
+    print(f"precision group {indnames[i]}: {precision:.3f}")    
+    print(f"reccal group {indnames[i]}: {recall:.3f}")
+    print(f"f1-scor group {indnames[i]}: {f1scor:.3f}")
     
