@@ -47,10 +47,9 @@ for file in files:
             for index, row in df[df.columns].iterrows():
                 # cell = [genre, course, fatigue_value, correct(1)/incorret(0)]
                 *rest,id = row 
-                cell = [int("DEI" in id)] #[int(row[0]=="DEI"),sheet, row[1]]
-                cell += rest
+                cell = rest
                 cell += [1 if (file=='/DEI_trial_by_trial_Right.xlsx' or file=='/esec_trial_by_trial_Right.xlsx') else 0]
-     
+                cell += [int("DEI" in id)] 
                 if (id not in dataValues):
                     dataValues[id] = [cell]
                 else:
@@ -63,14 +62,12 @@ with open(genreFile, "r") as f:
         if l=="" or '--' in l:continue
         id, genre, rest = l.split(' - ')
         
-        correct = int(re.search(r'\d+', rest).group())
         if id[-2] == '_': id = id[:-1] + '0' + id[-1]
         for dataDict in [values['TRAINING'], values['TESTING']]: #get dicts train and test
             for i in range(len(dataDict[id])):
-                dataDict[id][i][0:0] = [int(genre=='Masculino')]  
-                dataDict[id][i][-1:-1] = [correct]
+                dataDict[id][i].append(int(genre=='Masculino'))  
 
-
+#print(values)
 # For each person ( PERSON : list([genre, course, fatigue_value, correct/incorrect ]))        
 items = { 'TRAINING': [], 'TESTING': [] }
 for dataType in ['TRAINING','TESTING']:
@@ -85,18 +82,18 @@ inds = np.where(np.isnan(Itrain))
 Itrain[inds] = np.take(col_mean, inds[1])
 
 scaler = MinMaxScaler()
-scaler.fit(Itrain[:,2:-1])
+scaler.fit(Itrain[:,:-2])
 
 Itest = items['TESTING']   #fixing missing values by the average
 col_mean = np.nanmean(Itest, axis=0)
 inds = np.where(np.isnan(Itest))
 Itest[inds] = np.take(col_mean, inds[1])
 
-data_trainX = scaler.transform(Itrain[:,2:-1])
-data_trainY = Itrain[:,:2]
+data_trainX = scaler.transform(Itrain[:,:-2])
+data_trainY = Itrain[:,-2:]
 
-data_testX = scaler.transform(Itest[:,2:-1])
-data_testY = Itest[:,:2] 
+data_testX = scaler.transform(Itest[:,:-2])
+data_testY = Itest[:,-2:] 
 
 
 #pca = PCA(n_components=2)
@@ -116,32 +113,51 @@ outputs = Dense(data_trainY.shape[1], activation='sigmoid')(x)
 model = Model(inputs=inputs, outputs=outputs)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 
-model.fit(data_trainX, data_trainY, epochs=30, batch_size=8)
+plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=False)
+model.fit(data_trainX, data_trainY, epochs=40, batch_size=8)
 predicts = (model.predict(data_testX)>0.5)
+print('-----')
+genrePredicts = predicts[:,-1:]
+genreTest = data_testY[:,-1:]
+indnames = ['FEMALE','MALE']
+print('genre accuracy:', (genrePredicts==genreTest).sum()/genrePredicts.shape[0])
+for i in range(2):
+    precision = np.multiply(genrePredicts==i,genreTest==i).sum()/((genrePredicts==i).sum())
+    recall = np.multiply(genrePredicts==i,genreTest==i).sum()/((genreTest==i).sum())
+    f1scor = 2*precision*recall/(precision+recall) if precision+recall else 0.0
+    print('---')
+    print(f"precision genre {indnames[i]}: {precision}")    
+    print(f"reccal genre {indnames[i]}: {recall}")
+    print(f"f1-scor genre {indnames[i]}: {f1scor}")
 
-genrePredicts = predicts[:,0:1]
-genreTest = data_testY[:,0:1]
+print('-----')
+coursePredicts = predicts[:,-2:-1] #same as [:,-2] but in matrix form
+courseTest = data_testY[:,-2:-1] #same as [:,-2] but in matrix form
+indnames = ['ESEC','DEI']
+print('course accuracy:', (coursePredicts==courseTest).sum()/coursePredicts.shape[0])
+for i in range(2):
+    divisor = (coursePredicts==i).sum()
+    precision = np.multiply(coursePredicts==i,courseTest==i).sum()/divisor if divisor else 0
+    recall = np.multiply(coursePredicts==i,courseTest==i).sum()/divisor if divisor else 0
+    f1scor = 2*precision*recall/(precision+recall) if precision+recall else 0.0
+    print('---')
+    print(f"precision genre {indnames[i]}: {precision}")    
+    print(f"reccal genre {indnames[i]}: {recall}")
+    print(f"f1-scor genre {indnames[i]}: {f1scor}")
+print('-----')
 
-print('genre accuracy;', (genrePredicts==genreTest).sum()/genrePredicts.shape[0])
-
-coursePredicts = predicts[:,1:2]
-courseTest = data_testY[:,1:2]
-
-print('course accuracy;', (coursePredicts==courseTest).sum()/coursePredicts.shape[0])
-
-groupPredicts = predicts[:,0:1]+predicts[:,1:2]*2
-groupTest = data_testY[:,0:1]+data_testY[:,1:2]*2
+groupPredicts = predicts[:,-1:]+predicts[:,-2:-1]*2 #0,1,2,3
+groupTest = data_testY[:,-1:]+data_testY[:,-2:-1]*2 #0,1,2,3
 print('group accuracy:',(groupPredicts==groupTest).sum()/groupPredicts.shape[0])
 
-
+indnames = ['ESEC AND FEMALE','ESEC AND MALE', 'DEI AND FEMALE', 'DEI AND MALE']
 for i in range(4):
-    precision = np.multiply(groupPredicts==i,groupTest==i).sum()/((groupPredicts==i).sum())
-    recall = np.multiply(groupPredicts==i,groupTest==i).sum()/((groupTest==i).sum())
-    f1scor = 2*precision*recall/(precision+recall)
+    divisor = (groupPredicts==i).sum()
+    precision = np.multiply(groupPredicts==i,groupTest==i).sum()/divisor if divisor else 0
+    recall = np.multiply(groupPredicts==i,groupTest==i).sum()/divisor if divisor else 0
+    f1scor = 2*precision*recall/(precision+recall) if precision+recall else 0.0
     print('---')
-    print(f"precision group {i}: {precision}")    
-    print(f"reccal group {i}: {recall}")
-    print(f"f1-scor group {i}: {f1scor}")
+    print(f"precision group {indnames[i]}: {precision}")    
+    print(f"reccal group {indnames[i]}: {recall}")
+    print(f"f1-scor group {indnames[i]}: {f1scor}")
     
-#print('precision:', np.multiply(predicts,data_testY[:,:1]).sum()/predicts.sum())
-#print('reccal:', np.multiply(predicts,data_testY[:,:1]).sum()/data_testY[:,:1].sum())
